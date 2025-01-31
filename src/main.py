@@ -1,6 +1,6 @@
-from window import Window
-from point import Point
-from line import Line
+from gui.window import Window
+from gui.point import Point
+from gui.line import Line
 
 def main():
     win = Window(800, 600)
