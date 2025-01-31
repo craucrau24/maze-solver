@@ -28,8 +28,13 @@ def main():
         ((180, 100, 200, 120), set(["right", "bottom"])),
 
     ]
-    for cell in create_cells(cell_data, win):
+    cells = create_cells(cell_data, win)
+    for cell in cells:
         cell.draw()
+    
+    cells[0].draw_move(cells[1], True)
+    cells[2].draw_move(cells[3])
+    
     win.wait_for_close()
 
 

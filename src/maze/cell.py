@@ -28,3 +28,9 @@ class Cell:
         
         for line in lines:
             self.__win.draw_line(line, "black")
+        
+    def center(self):
+        return Point((self.__topleft.x + self.__botright.x) / 2, (self.__topleft.y + self.__botright.y) / 2)
+    
+    def draw_move(self, to_cell, undo=False):
+        self.__win.draw_line(Line(self.center(), to_cell.center()), "gray" if undo else "red" )
