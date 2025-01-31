@@ -22,8 +22,8 @@ class Maze:
                 cell.draw()
 
     def _create_cell(self, i, j):
-        x = self.origin.x + i * self.cell_size_x
-        y = self.origin.y + j * self.cell_size_y
+        x = self.origin.x + j * self.cell_size_x
+        y = self.origin.y + i * self.cell_size_y
         cell = Cell(self.__win, Point(x, y), Point(x + self.cell_size_x, y + self.cell_size_y))
         return cell
 
