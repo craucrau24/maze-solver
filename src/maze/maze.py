@@ -13,11 +13,11 @@ class Maze:
         self._create_cells()
 
     def _create_cells(self):
-        self.__cells = [
+        self._cells = [
             [self._create_cell(i, j) for j in range(self.num_cols)] for i in range(self.num_rows)
         ]
         
-        for row in self.__cells:
+        for row in self._cells:
             for cell in row:
                 cell.draw()
 
