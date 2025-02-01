@@ -44,6 +44,6 @@ class RandomPassThroughMazeIterator:
 
     def push_next(self, pos):
         row, col = pos
-        neigh = self.__maze.neighbour_cells(row, col)
+        neigh = self.__maze.neighbour_cells(row, col, True)
         random.shuffle(neigh)
         self.__stack.append((pos, neigh))

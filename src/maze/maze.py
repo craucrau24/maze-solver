@@ -1,6 +1,7 @@
 from .cell import Cell
 from gui.point import Point
 from .iterators.random_passthrough import RandomPassThroughMazeIterator
+from .iterators.regular import RegularMazeIterator
 
 class Maze:
     def __init__(self, origin, num_rows, num_cols, cell_size_x, cell_size_y, win):
@@ -42,20 +43,20 @@ class Maze:
         self._cells[0][0].has_left_wall = False
         self._cells[-1][-1].has_right_wall = False
 
-    def neighbour_cells(self, row, column):
+    def neighbour_cells(self, row, column, passthrough=False):
         neighbours = []
         if row < 0 or row >= self.num_rows:
             raise ValueError("Row index out of bound")
         if column < 0 or column >= self.num_cols:
             raise ValueError("Column index out of bound")
 
-        if row != 0:
+        if row != 0 and (passthrough or not self._cells[row][column].has_top_wall):
             neighbours.append(((row - 1, column), "up"))
-        if column != 0:
+        if column != 0 and (passthrough or not self._cells[row][column].has_left_wall):
             neighbours.append(((row, column - 1), "left"))
-        if row != self.num_rows - 1:
+        if row != self.num_rows - 1 and (passthrough or not self._cells[row][column].has_bottom_wall):
             neighbours.append(((row + 1, column), "down"))
-        if column != self.num_cols - 1:
+        if column != self.num_cols - 1 and (passthrough or not self._cells[row][column].has_right_wall):
             neighbours.append(((row, column + 1), "right"))
         
         return neighbours
@@ -83,3 +84,12 @@ class Maze:
         iter = RandomPassThroughMazeIterator(self)
         for orig, next, dir in iter:
             self._break_wall(orig, next, dir)
+
+    def solve(self):
+        iter = RegularMazeIterator(self)
+        for orig, next, dir in iter:
+            self._cells[orig[0]][orig[1]].draw_move(self._cells[next[0]][next[1]], dir)
+            self.__win._animate()
+            if next == (self.num_rows -1, self.num_cols -1):
+                return True
+        return False

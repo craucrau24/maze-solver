@@ -3,11 +3,15 @@ from gui.point import Point
 from maze.maze import Maze
 
 def main():
-    win = Window(800, 600)
-    maze = Maze(Point(20, 20), 15, 20, 30, 30, win)
+    win = Window(1200, 900)
+    maze = Maze(Point(20, 20), 28, 45, 25, 30, win)
     maze._break_entrance_and_exit()
     maze._break_walls()
     maze.redraw()
+    if maze.solve():
+        print("Success!")
+    else:
+        print("Failure!")
     
     win.wait_for_close()
 

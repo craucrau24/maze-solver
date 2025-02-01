@@ -1,4 +1,5 @@
 from tkinter import Tk, BOTH, Canvas
+import time
 
 class Window:
     def __init__(self, width, height):
@@ -28,3 +29,7 @@ class Window:
     
     def draw_line(self, line, fill_color):
         line.draw(self.__canvas, fill_color)
+
+    def _animate(self):
+        time.sleep(0.1)
+        self.redraw()
