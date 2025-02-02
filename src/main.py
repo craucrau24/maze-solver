@@ -8,10 +8,8 @@ def main():
     maze._break_entrance_and_exit()
     maze._break_walls()
     maze.redraw()
-    if maze.solve():
-        print("Success!")
-    else:
-        print("Failure!")
+    maze.solve()
+    win.add(maze)
     
     win.wait_for_close()
 

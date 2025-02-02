@@ -1,5 +1,6 @@
 from .cell import Cell
 from gui.point import Point
+from gui.text import Text
 from .iterators.random_passthrough import RandomPassThroughMazeIterator
 from .iterators.regular import RegularMazeIterator
 
@@ -11,6 +12,7 @@ class Maze:
         self.cell_size_x = cell_size_x
         self.cell_size_y = cell_size_y
         self.__win = win
+        self.__solver = None
 
         self._create_cells()
 
@@ -86,10 +88,27 @@ class Maze:
             self._break_wall(orig, next, dir)
 
     def solve(self):
-        iter = RegularMazeIterator(self)
-        for orig, next, dir in iter:
-            self._cells[orig[0]][orig[1]].draw_move(self._cells[next[0]][next[1]], dir)
-            self.__win._animate()
-            if next == (self.num_rows -1, self.num_cols -1):
-                return True
-        return False
+        self.__solver = RegularMazeIterator(self)
+
+    def _success(self):
+        text = Text("Success !", self.__win.center())
+        #self.__win.draw_text(text, font="{courier 20}", color="green")
+        self.__win.draw_text(text, font=("courier", 40, "bold"), color="green")
+
+    def _failure(self):
+        text = Text("Failure !", self.__win.center())
+        self.__win.draw_text(text, font=("courier", 40, "bold"), color="red")
+
+    def update(self):
+        if self.__solver is None:
+            return
+        try:
+            orig, nxt, dir = next(self.__solver)
+        except StopIteration:
+            self.__solver = None
+            self._failure()
+
+        self._cells[orig[0]][orig[1]].draw_move(self._cells[nxt[0]][nxt[1]], dir)
+        if nxt == (self.num_rows -1, self.num_cols -1):
+            self.__solver = None
+            self._success()
